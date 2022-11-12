@@ -1,7 +1,9 @@
 from flask import Flask
 from init import db, ma, bcrypt, jwt
-from controllers.auth_controller import auth_bp
-from controllers.cli_controller import db_commands
+from controllers.service_controller import service_bp
+from controllers.owner_controller   import owner_bp
+from cli_command import db_commands
+
 import os
 
 def create_app():
@@ -15,12 +17,12 @@ def create_app():
     def unauthorized(err):
         return {'error': str(err)}, 401
 
-    @app.errorhandler(KeyError)
-    def KeyError(err):
-        return {'error': f'The field {err} is required.'}, 400
+    # @app.errorhandler(KeyError)
+    # def KeyError(err):
+    #     return {'error': f'The field {err} is required.'}, 400
 
     app.config['JSON_SORT_KEYS'] = False
-    app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL')
+    app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://localhost:8080/car_service'
     app.config['JWT_SECRET_KEY'] = os.environ.get('JWT_SECRET_KEY')
 
     db.init_app(app)
@@ -29,7 +31,7 @@ def create_app():
     jwt.init_app(app)
 
     app.register_blueprint(db_commands)
-    app.register_blueprint(cards_bp)
-    app.register_blueprint(auth_bp)
+    app.register_blueprint(service_bp)
+    app.register_blueprint(owner_bp)
 
     return app

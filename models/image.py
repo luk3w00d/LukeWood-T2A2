@@ -12,7 +12,7 @@ class Image(db.Model):
 
     service_id = db.Column(db.Integer, db.ForeignKey('service.id'), nullable=False)
 
-    user = db.relationship('User', back_populates='cards')
+    user = db.relationship('Owner', back_populates='cards')
     comments = db.relationship('Comment', back_populates='card', cascade='all, delete')
 
 
