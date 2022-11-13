@@ -13,12 +13,15 @@ class Service(db.Model):
     updated_at = db.Column(db.DateTime)
     deleted = db.Column(db.Boolean)
 
-    vehicle_id = db.Column(db.Integer, db.ForeignKey('vehicle.id'), nullable=False)
+    vehicle_id = db.Column(db.Integer, db.ForeignKey('vehicle.id'))
     vehicle = db.relationship('Vehicle', back_populates='services')
      
 
 
 class ServiceSchema(ma.Schema):
+
+    service = fields.List(fields.Nested('SeviceSchema'))
+
     class Meta:
         fields = ('id', 'start_time', 'end_time', 'created_at', 'updated_at', 'deleted')
         ordered = True

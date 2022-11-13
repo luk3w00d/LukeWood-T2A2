@@ -14,13 +14,13 @@ class Vehicle(db.Model):
     updated_at = db.Column(db.DateTime)
     deleted = db.Column(db.Boolean)
 
-    owner_id = db.Column(db.Integer, db.ForeignKey('owner.id'), nullable=False)
+    owner_id = db.Column(db.Integer, db.ForeignKey('owner.id') )
     owner = db.relationship('Owner', back_populates='vehicles')
     services = db.relationship('Service', back_populates='vehicle', cascade='all, delete')
 
 class VehicleSchema(ma.Schema):
 
-    owner = fields.List(fields.Nested('OwnerSchema'))
+    vehicle = fields.List(fields.Nested('VehicleSchema'))
 
 
     class Meta:

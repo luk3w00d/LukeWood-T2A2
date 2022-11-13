@@ -1,4 +1,5 @@
-
+from init import db, ma
+from marshmallow import fields
 
 
 class Image(db.Model):
@@ -11,14 +12,15 @@ class Image(db.Model):
     deleted = db.Column(db.Boolean)
 
     service_id = db.Column(db.Integer, db.ForeignKey('service.id'), nullable=False)
+    vehicle_id = db.Column(db.Integer, db.ForeignKey('vehicle.id'), nullable=False)
+
 
     user = db.relationship('Owner', back_populates='cards')
-    comments = db.relationship('Comment', back_populates='card', cascade='all, delete')
 
 
-class CardSchema(ma.Schema):
-    user = fields.Nested('UserSchema', only=['name', 'email'])
-    comments = fields.List(fields.Nested('CommentSchema', exclude=['card']))
+class ImageSchema(ma.Schema):
+
+    image = fields.List(fields.Nested('ImageSchema'))
 
     class Meta:
         fields = ('id', 'url', 'created_at', 'updated_at', 'deleted')

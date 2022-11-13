@@ -10,8 +10,8 @@ class Service_item(db.Model):
     cost = db.Column(db.Integer)
     qty = db.Column(db.Integer) 
     notes = db.Column(db.String)
-    created_at = db.Column(db.datetime)
-    updated_at = db.Column(db.datetime)
+    created_at = db.Column(db.DateTime)
+    updated_at = db.Column(db.DateTime)
     deleted = db.Column(db.Boolean)
 
     service_id = db.Column(db.Integer, db.ForeignKey('service.id'), nullable=False)
@@ -22,7 +22,7 @@ class Service_item(db.Model):
 
 class Service_itemSchema(ma.Schema):
     
-    
+    service_item = fields.List(fields.Nested('Sevice_itemSchema'))
 
     class Meta:
         fields = ('id', 'item_type', 'cost', 'qty', 'notes', 'created_at', 'updated_at', 'deleted')

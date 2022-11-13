@@ -35,54 +35,54 @@ def get_one_Service_item(id):
 def delete_one_service_item(id):
     # authorize()
 
-    stmt = db.select(Vehicle).filter_by(id=id)
-    vehicle = db.session.scalar(stmt)
-    if vehicle:
-        vehicle.deleted = True
-        vehicle.updated_at = datetime.datetime.now()
+    stmt = db.select(Service_item).filter_by(id=id)
+    service_item = db.session.scalar(stmt)
+    if service_item:
+        service_item.deleted = True
+        service_item.updated_at = datetime.datetime.now()
         db.session.commit()
-        return {'message': f"Vehicle'{vehicle.make}' deleted successfully"}
+        return {'message': f"Service item'{service_item}' deleted successfully"}
     else:
-        return {'error': f'Vehicle not found with id {id}'}, 404
+        return {'error': f'Service item not found with id {id}'}, 404
 
 
 @service_item_bp.route('/<int:id>/', methods=['PUT', 'PATCH'])
 # @jwt_required()
-def update_one_vehicle(id):
-    stmt = db.select(Vehicle).filter_by(id=id)
-    vehicle = db.session.scalar(stmt)
+def update_one_service_item(id):
+    stmt = db.select(Service_item).filter_by(id=id)
+    service_item = db.session.scalar(stmt)
     now = datetime.datetime.now()
-    if vehicle:
-        vehicle.vin = request.json.get('vin') 
-        vehicle.make = request.json.get('make') 
-        vehicle.model = request.json.get('model')
-        vehicle.year = request.json.get('year')
-        vehicle.created_at = now
-        vehicle.updated_at = now
+    if service_item:
+        service_item.item_type = request.json.get('item_type') 
+        service_item.cost = request.json.get('cost') 
+        service_item.qty = request.json.get('qty')
+        service_item.notes = request.json.get('notes')
+        service_item.created_at = now
+        service_item.updated_at = now
         db.session.commit()      
-        return VehicleSchema().dump(vehicle)
+        return Service_itemSchema().dump(service_item)
     else:
-        return {'error': f'Owner not found with id {id}'}, 404
+        return {'error': f'Service item not found with id {id}'}, 404
 
 
 @service_item_bp.route('/', methods=['POST'])
 # @jwt_required()
-def create_vehicle():
+def create_service_item():
     now = datetime.datetime.now()
-    vehicle = Vehicle(
-        vin = request.json.get('vin'), 
-        make = request.json.get('make'), 
-        model = request.json.get('model'),
-        year = request.json.get('year'),
+    service_item = Service_item(
+        item_type = request.json.get('item_type'), 
+        cost = request.json.get('cost'), 
+        qty = request.json.get('qty'),
+        notes = request.json.get('notes'),
         created_at = now,
         updated_at = now
     )
     
-    db.session.add(vehicle)
+    db.session.add(service_item)
     try:
         db.session.commit()
     except IntegrityError:
-        return {'error': f'vehicle with {vehicle.vin} already exists'}, 400
+        return {'error': f'Service item with {service_item} already exists'}, 400
   
-    return VehicleSchema().dump(vehicle), 201
+    return Service_itemSchema().dump(service_item), 201
 

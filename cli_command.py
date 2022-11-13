@@ -1,6 +1,9 @@
 from flask import Blueprint
 from init import db, bcrypt
 from datetime import date
+from models.service import Service
+from models.vehicle import Vehicle
+from models.owner import Owner
 
 
 
@@ -19,83 +22,80 @@ def drop_db():
 
 @db_commands.cli.command('seed')
 def seed_db():
-    pass
-    # users = [
-    #     Owner(
-    #         email='admin@spam.com',
-    #         password=bcrypt.generate_password_hash('eggs').decode('utf-8'),
-    #         is_admin=True
-    #     ),
-    #     Owner(
-    #         name='John Cleese',
-    #         email='someone@spam.com',
-    #         password=bcrypt.generate_password_hash('12345').decode('utf-8')
-    #     )
-    # ]
+    owners = [
+        Owner(
+            first_name='Fred',
+            last_name='Wild',
+            email='143faker@gmail.com',
+            phone='1233455',
+            # password=bcrypt.generate_password_hash('potato').decode('utf-8'),
+            # is_admin=True
+        ),
+        Owner(
+            first_name='Bill',
+            last_name='Frank',
+            email='redred@gmail.com',
+            phone='677756',
+            # password=bcrypt.generate_password_hash('stars').decode('utf-8')
+        )
+    ]
 
-    # db.session.add_all(users)
-    # db.session.commit()
+    db.session.add_all(owners)
+    db.session.commit()
 
-    # cards = [
-    #     Card(
-    #         title = 'Start the project',
-    #         description = 'Stage 1 - Create the database',
-    #         status = 'To Do',
-    #         priority = 'High',
-    #         date = date.today(),
-    #         user = users[0]
-    #     ),
-    #     Card(
-    #         title = "SQLAlchemy",
-    #         description = "Stage 2 - Integrate ORM",
-    #         status = "Ongoing",
-    #         priority = "High",
-    #         date = date.today(),
-    #         user = users[0]
-    #     ),
-    #     Card(
-    #         title = "ORM Queries",
-    #         description = "Stage 3 - Implement several queries",
-    #         status = "Ongoing",
-    #         priority = "Medium",
-    #         date = date.today(),
-    #         user = users[1]
-    #     ),
-    #     Card(
-    #         title = "Marshmallow",
-    #         description = "Stage 4 - Implement Marshmallow to jsonify models",
-    #         status = "Ongoing",
-    #         priority = "Medium",
-    #         date = date.today(),
-    #         user = users[1]
-    #     )
-    # ]
+    vehicle = [
+        Vehicle(
+            vin='23423ds123123fdsssa',
+            make='volkswagon',
+            model='passat',
+            year='2008',
 
-    # db.session.add_all(cards)
-    # db.session.commit()
+        ),
+        Vehicle(
+            vin='4564krk45k-0242',
+            make='valiant',
+            model='ve',
+            year ='1969'
+        )
+    ]
 
-    # comments = [
-    #     Comment(
-    #         message = 'Comment 1',
-    #         user = users[1],
-    #         card = cards[0],
-    #         date = date.today()
-    #     ),
-    #     Comment(
-    #         message = 'Comment 2',
-    #         user = users[0],
-    #         card = cards[0],
-    #         date = date.today()
-    #     ),
-    #     Comment(
-    #         message = 'Comment 3',
-    #         user = users[0],
-    #         card = cards[2],
-    #         date = date.today()
-    #     )
-    # ]
+    db.session.add_all(vehicle)
+    db.session.commit()
 
-    # db.session.add_all(comments)
-    # db.session.commit()
+    service = [
+        Service(
+            start_time = date.today(),
+            end_time = date.today(),
+        ),
+        Service(
+            start_time = date.today(),
+            end_time = date.today(),
+        )
 
-    # print('Tables seeded')
+    ]
+
+    db.session.add_all(service)
+    db.session.commit()
+
+    vehicle = [
+        Vehicle(
+            vin='23423ds123123fdsssa',
+            make='volkswagon',
+            model='passat',
+            year='2008',
+
+        ),
+        Vehicle(
+            vin='4564krk45k-0242',
+            make='valiant',
+            model='ve',
+            year ='1969'
+        )
+    ]
+
+    db.session.add_all(vehicle)
+    db.session.commit()
+
+
+
+    print('Tables seeded')

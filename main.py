@@ -3,6 +3,7 @@ from init import db, ma, bcrypt, jwt
 from controllers.service_controller import service_bp
 from controllers.owner_controller   import owner_bp
 from controllers.vehicle_controller import vehicle_bp
+from controllers.service_item_controller import service_item_bp
 from cli_command import db_commands
 
 import os
@@ -35,5 +36,6 @@ def create_app():
     app.register_blueprint(service_bp)
     app.register_blueprint(owner_bp)
     app.register_blueprint(vehicle_bp)
+    app.register_blueprint(service_item_bp)
 
     return app
