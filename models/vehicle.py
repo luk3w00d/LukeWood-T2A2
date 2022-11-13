@@ -14,6 +14,8 @@ class Vehicle(db.Model):
     updated_at = db.Column(db.DateTime)
     deleted = db.Column(db.Boolean)
 
+    image_id = db.Column(db.Integer, db.ForeignKey('image.id'))
+    image = db.relationship('Image', cascade='all, delete')
     owner_id = db.Column(db.Integer, db.ForeignKey('owner.id') )
     owner = db.relationship('Owner', back_populates='vehicles')
     services = db.relationship('Service', back_populates='vehicle', cascade='all, delete')

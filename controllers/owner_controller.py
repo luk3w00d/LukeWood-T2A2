@@ -32,7 +32,7 @@ def get_one_owner(id):
 
 @owner_bp.route('/<int:id>/', methods=['DELETE'])
 # @jwt_required()
-def delete_one_card(id):
+def delete_one_owner(id):
     # authorize()
 
     stmt = db.select(Owner).filter_by(id=id)

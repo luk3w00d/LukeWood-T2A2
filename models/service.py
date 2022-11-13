@@ -13,6 +13,8 @@ class Service(db.Model):
     updated_at = db.Column(db.DateTime)
     deleted = db.Column(db.Boolean)
 
+    image_id = db.Column(db.Integer, db.ForeignKey('image.id'))
+    image = db.relationship('Image', cascade='all, delete')
     vehicle_id = db.Column(db.Integer, db.ForeignKey('vehicle.id'))
     vehicle = db.relationship('Vehicle', back_populates='services')
      

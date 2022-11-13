@@ -7,15 +7,10 @@ class Image(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
     url = db.Column(db.String)
-    created_at = db.Column(db.datetime)
-    updated_at = db.Column(db.datetime)
+    created_at = db.Column(db.DateTime)
+    updated_at = db.Column(db.DateTime)
     deleted = db.Column(db.Boolean)
 
-    service_id = db.Column(db.Integer, db.ForeignKey('service.id'), nullable=False)
-    vehicle_id = db.Column(db.Integer, db.ForeignKey('vehicle.id'), nullable=False)
-
-
-    user = db.relationship('Owner', back_populates='cards')
 
 
 class ImageSchema(ma.Schema):

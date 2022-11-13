@@ -50,10 +50,10 @@ def update_one_service(id):
     service = db.session.scalar(stmt)
     now = datetime.datetime.now()
     if service:
-        service.start_time = now 
-        service.end_time = datetime 
-        service.created_at = now
-        service.update_at = datetime
+        service.start_time = request.json['start_time']
+        service.end_time = request.json['end_time']
+        service.image_id = request.json.get('image_id')
+        service.update_at = now
         return ServiceSchema().dump(service)
     else:
         return {'error': f'service not found with id {id}'}, 404
@@ -66,6 +66,7 @@ def create_service():
     service = Service(
         start_time = request.json.get('start_time'),
         end_time = request.json.get('end_time'),
+        image_id = request.json.get('image_id'),
         created_at = now,
         updated_at = now
     )

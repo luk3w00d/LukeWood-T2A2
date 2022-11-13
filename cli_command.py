@@ -2,6 +2,7 @@ from flask import Blueprint
 from init import db, bcrypt
 from datetime import date
 from models.service import Service
+from models.service_item import Service_item
 from models.vehicle import Vehicle
 from models.owner import Owner
 
@@ -77,19 +78,18 @@ def seed_db():
     db.session.add_all(service)
     db.session.commit()
 
-    vehicle = [
-        Vehicle(
-            vin='23423ds123123fdsssa',
-            make='volkswagon',
-            model='passat',
-            year='2008',
+    service_item = [
+        Service_item(
+            item_type='filter',
+            cost='344',
+            notes='needs potato'
+           
 
         ),
-        Vehicle(
-            vin='4564krk45k-0242',
-            make='valiant',
-            model='ve',
-            year ='1969'
+        Service_item(
+            item_type='oil',
+            cost='343444',
+            notes='needs ddd'
         )
     ]
 

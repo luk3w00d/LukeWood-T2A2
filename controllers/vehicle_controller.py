@@ -57,12 +57,13 @@ def update_one_vehicle(id):
         vehicle.make = request.json.get('make') 
         vehicle.model = request.json.get('model')
         vehicle.year = request.json.get('year')
+        vehicle.image_id = request.json.get('image_id')
         vehicle.created_at = now
         vehicle.updated_at = now
         db.session.commit()      
         return VehicleSchema().dump(vehicle)
     else:
-        return {'error': f'Owner not found with id {id}'}, 404
+        return {'error': f'Vehicle not found with id {id}'}, 404
 
 
 @vehicle_bp.route('/', methods=['POST'])
@@ -74,6 +75,7 @@ def create_vehicle():
         make = request.json.get('make'), 
         model = request.json.get('model'),
         year = request.json.get('year'),
+        image_id = request.json.get('image_id'),
         created_at = now,
         updated_at = now
     )
