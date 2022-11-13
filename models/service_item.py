@@ -15,14 +15,14 @@ class Service_item(db.Model):
     deleted = db.Column(db.Boolean)
 
     service_id = db.Column(db.Integer, db.ForeignKey('service.id'), nullable=False)
+    
+   
+    
 
-    user = db.relationship('User', back_populates='cards')
-    comments = db.relationship('Comment', back_populates='card', cascade='all, delete')
 
-
-class CardSchema(ma.Schema):
-    user = fields.Nested('UserSchema', only=['name', 'email'])
-    comments = fields.List(fields.Nested('CommentSchema', exclude=['card']))
+class Service_itemSchema(ma.Schema):
+    
+    
 
     class Meta:
         fields = ('id', 'item_type', 'cost', 'qty', 'notes', 'created_at', 'updated_at', 'deleted')

@@ -13,10 +13,9 @@ class Service(db.Model):
     updated_at = db.Column(db.DateTime)
     deleted = db.Column(db.Boolean)
 
-    service_id = db.Column(db.Integer, db.ForeignKey('service.id'), nullable=False)
-
-    # user = db.relationship('Owner', back_populates='service')
-    
+    vehicle_id = db.Column(db.Integer, db.ForeignKey('vehicle.id'), nullable=False)
+    vehicle = db.relationship('Vehicle', back_populates='services')
+     
 
 
 class ServiceSchema(ma.Schema):

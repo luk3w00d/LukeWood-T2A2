@@ -1,3 +1,4 @@
+import datetime
 from flask import Blueprint, request
 from init import db
 from datetime import date
@@ -29,7 +30,7 @@ def get_one_service(id):
 
 @service_bp.route('/<int:id>/', methods=['DELETE'])
 # @jwt_required()
-def delete_one_card(id):
+def delete_one_service(id):
     # authorize()
 
     stmt = db.select(Service).filter_by(id=id)
@@ -42,55 +43,35 @@ def delete_one_card(id):
         return {'error': f'Service not found with id {id}'}, 404
 
 
-# @service_bp.route('/<int:id>/', methods=['PUT', 'PATCH'])
+@service_bp.route('/<int:id>/', methods=['PUT', 'PATCH'])
 # @jwt_required()
-# def update_one_card(id):
-#     stmt = db.select(Card).filter_by(id=id)
-#     card = db.session.scalar(stmt)
-#     if card:
-#         card.title = request.json.get('title') or card.title
-#         card.description = request.json.get('description') or card.description
-#         card.status = request.json.get('status') or card.status
-#         card.priority = request.json.get('priority') or card.priority
-#         db.session.commit()      
-#         return CardSchema().dump(card)
-#     else:
-#         return {'error': f'Card not found with id {id}'}, 404
+def update_one_service(id):
+    stmt = db.select(Service).filter_by(id=id)
+    service = db.session.scalar(stmt)
+    now = datetime.datetime.now()
+    if service:
+        service.start_time = now 
+        service.end_time = datetime 
+        service.created_at = now
+        service.update_at = datetime
+        return ServiceSchema().dump(service)
+    else:
+        return {'error': f'service not found with id {id}'}, 404
 
 
-# @service_bp.route('/', methods=['POST'])
+@service_bp.route('/', methods=['POST'])
 # @jwt_required()
-# def create_card():
-#     # Create a new Card model instance
-#     card = Card(
-#         title = request.json['title'],
-#         description = request.json['description'],
-#         date = date.today(),
-#         status = request.json['status'],
-#         priority = request.json['priority'],
-#         user_id = get_jwt_identity()
-#     )
-#     # Add and commit card to DB
-#     db.session.add(card)
-#     db.session.commit()
-#     # Respond to client
-#     return CardSchema().dump(card), 201
+def create_service():
+    now = datetime.datetime.now()
+    service = Service(
+        start_time = request.json.get('start_time'),
+        end_time = request.json.get('end_time'),
+        created_at = now,
+        updated_at = now
+    )
+  
+    db.session.add(service)
+    db.session.commit()
+    
+    return ServiceSchema().dump(service), 201
 
-
-# @service_bp.route('/<int:card_id>/comments', methods=['POST'])
-# @jwt_required()
-# def create_comment(card_id):
-#     stmt = db.select(Card).filter_by(id=card_id)
-#     card = db.session.scalar(stmt)
-#     if card:
-#         comment = Comment(
-#             message = request.json['message'],
-#             user_id = get_jwt_identity(),
-#             card = card,
-#             date = date.today()
-#         )
-#         db.session.add(comment)
-#         db.session.commit()
-#         return CommentSchema().dump(comment), 201
-#     else:
-#         return {'error': f'Card not found with id {id}'}, 404

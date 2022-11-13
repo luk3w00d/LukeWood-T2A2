@@ -4,35 +4,35 @@ from flask import Blueprint, request
 from init import db
 from datetime import date
 from flask_jwt_extended import jwt_required, get_jwt_identity
-from models.vehicle import Vehicle, VehicleSchema
+from models.service_item import Service_item, Service_itemSchema
 
 
 
 
-vehicle_bp = Blueprint('vehicle', __name__, url_prefix='/vehicle')
+service_item_bp = Blueprint('service_item', __name__, url_prefix='/service_item')
 
 
-@vehicle_bp.route('/')
+@service_item_bp.route('/')
 # @jwt_required()
-def get_vehicles():
-    stmt = db.select(Vehicle).order_by(Vehicle.created_at.desc())
-    vehicles = db.session.scalars(stmt)
-    return VehicleSchema(many=True).dump(vehicles)
+def get_service_items():
+    stmt = db.select(Service_item).order_by(Service_item.created_at.desc())
+    service_items = db.session.scalars(stmt)
+    return Service_itemSchema(many=True).dump(service_items)
 
 
-@vehicle_bp.route('/<int:id>/')
-def get_one_vehicle(id):
-    stmt = db.select(Vehicle).filter_by(id=id)
-    vehicle = db.session.scalar(stmt)
-    if vehicle:
-        return VehicleSchema().dump(vehicle)
+@service_item_bp.route('/<int:id>/')
+def get_one_Service_item(id):
+    stmt = db.select(Service_item).filter_by(id=id)
+    service_item = db.session.scalar(stmt)
+    if service_item:
+        return Service_itemSchema().dump(service_item)
     else:
-        return {'error': f'Vehicle not found with id {id}'}, 404
+        return {'error': f'Service item not found with id {id}'}, 404
 
 
-@vehicle_bp.route('/<int:id>/', methods=['DELETE'])
+@service_item_bp.route('/<int:id>/', methods=['DELETE'])
 # @jwt_required()
-def delete_one_vehicle(id):
+def delete_one_service_item(id):
     # authorize()
 
     stmt = db.select(Vehicle).filter_by(id=id)
@@ -46,7 +46,7 @@ def delete_one_vehicle(id):
         return {'error': f'Vehicle not found with id {id}'}, 404
 
 
-@vehicle_bp.route('/<int:id>/', methods=['PUT', 'PATCH'])
+@service_item_bp.route('/<int:id>/', methods=['PUT', 'PATCH'])
 # @jwt_required()
 def update_one_vehicle(id):
     stmt = db.select(Vehicle).filter_by(id=id)
@@ -65,7 +65,7 @@ def update_one_vehicle(id):
         return {'error': f'Owner not found with id {id}'}, 404
 
 
-@vehicle_bp.route('/', methods=['POST'])
+@service_item_bp.route('/', methods=['POST'])
 # @jwt_required()
 def create_vehicle():
     now = datetime.datetime.now()

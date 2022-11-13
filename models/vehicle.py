@@ -15,14 +15,13 @@ class Vehicle(db.Model):
     deleted = db.Column(db.Boolean)
 
     owner_id = db.Column(db.Integer, db.ForeignKey('owner.id'), nullable=False)
-
-    
-    # vehicle = db.relationship('Vehicle', back_populates='Vehicle')
-
+    owner = db.relationship('Owner', back_populates='vehicles')
+    services = db.relationship('Service', back_populates='vehicle', cascade='all, delete')
 
 class VehicleSchema(ma.Schema):
-    
-    
+
+    owner = fields.List(fields.Nested('OwnerSchema'))
+
 
     class Meta:
         fields = ('id', 'vin', 'make', 'model', 'year', 'created_at', 'updated_at', 'deleted')
