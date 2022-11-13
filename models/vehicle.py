@@ -10,18 +10,18 @@ class Vehicle(db.Model):
     make = db.Column(db.String)
     model = db.Column(db.String) 
     year = db.Column(db.Integer)
-    created_at = db.Column(db.datetime)
-    updated_at = db.Column(db.datetime)
+    created_at = db.Column(db.DateTime)
+    updated_at = db.Column(db.DateTime)
     deleted = db.Column(db.Boolean)
 
     owner_id = db.Column(db.Integer, db.ForeignKey('owner.id'), nullable=False)
 
-    owner = db.relationship('Owner', back_populates='Service')
     
+    # vehicle = db.relationship('Vehicle', back_populates='Vehicle')
 
 
 class VehicleSchema(ma.Schema):
-    owner = fields.Nested('OwnerSchema', only=['first_name', 'email'])
+    
     
 
     class Meta:

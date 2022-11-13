@@ -14,10 +14,10 @@ vehicle_bp = Blueprint('vehicle', __name__, url_prefix='/vehicle')
 
 @vehicle_bp.route('/')
 # @jwt_required()
-def get_vehicle():
+def get_vehicles():
     stmt = db.select(Vehicle).order_by(Vehicle.created_at.desc())
-    vehicle = db.session.scalars(stmt)
-    return VehicleSchema(many=True).dump(vehicle)
+    vehicles = db.session.scalars(stmt)
+    return VehicleSchema(many=True).dump(vehicles)
 
 
 @vehicle_bp.route('/<int:id>/')
@@ -32,55 +32,57 @@ def get_one_vehicle(id):
 
 @vehicle_bp.route('/<int:id>/', methods=['DELETE'])
 # @jwt_required()
-def delete_one_card(id):
+def delete_one_vehicle(id):
     # authorize()
 
-    stmt = db.select(Owner).filter_by(id=id)
-    owner = db.session.scalar(stmt)
-    if owner:
-        owner.deleted = True
-        owner.updated_at = datetime.datetime.now()
+    stmt = db.select(Vehicle).filter_by(id=id)
+    vehicle = db.session.scalar(stmt)
+    if vehicle:
+        vehicle.deleted = True
+        vehicle.updated_at = datetime.datetime.now()
         db.session.commit()
-        return {'message': f"Owner '{owner.first_name} {owner.last_name}' deleted successfully"}
+        return {'message': f"Vehicle'{vehicle.make}' deleted successfully"}
     else:
-        return {'error': f'Owner not found with id {id}'}, 404
+        return {'error': f'Vehicle not found with id {id}'}, 404
 
 
 @vehicle_bp.route('/<int:id>/', methods=['PUT', 'PATCH'])
 # @jwt_required()
-def update_one_owner(id):
-    stmt = db.select(Owner).filter_by(id=id)
-    owner = db.session.scalar(stmt)
-    if owner:
-        owner.first_name = request.json.get('first_name') or owner.first_name
-        owner.last_name = request.json.get('last_name') or owner.last_name
-        owner.email = request.json.get('email') or owner.email
-        owner.phone = request.json.get('phone') or owner.phone
-        owner.updated_at = datetime.datetime.now()
+def update_one_vehicle(id):
+    stmt = db.select(Vehicle).filter_by(id=id)
+    vehicle = db.session.scalar(stmt)
+    now = datetime.datetime.now()
+    if vehicle:
+        vehicle.vin = request.json.get('vin') 
+        vehicle.make = request.json.get('make') 
+        vehicle.model = request.json.get('model')
+        vehicle.year = request.json.get('year')
+        vehicle.created_at = now
+        vehicle.updated_at = now
         db.session.commit()      
-        return OwnerSchema().dump(owner)
+        return VehicleSchema().dump(vehicle)
     else:
         return {'error': f'Owner not found with id {id}'}, 404
 
 
 @vehicle_bp.route('/', methods=['POST'])
 # @jwt_required()
-def create_owner():
+def create_vehicle():
     now = datetime.datetime.now()
-    owner = Owner(
-        first_name = request.json.get('first_name'), 
-        last_name = request.json.get('last_name'), 
-        email = request.json.get('email'), 
-        phone = request.json.get('phone'), 
+    vehicle = Vehicle(
+        vin = request.json.get('vin'), 
+        make = request.json.get('make'), 
+        model = request.json.get('model'),
+        year = request.json.get('year'),
+        created_at = now,
         updated_at = now,
-        created_at = now
     )
     
-    db.session.add(owner)
+    db.session.add(vehicle)
     try:
         db.session.commit()
     except IntegrityError:
-        return {'error': f'Owner with email {owner.email} already exists'}, 400
+        return {'error': f'vehicle with {vehicle.vin} already exists'}, 400
   
-    return OwnerSchema().dump(owner), 201
+    return VehicleSchema().dump(vehicle), 201
 

@@ -1,4 +1,5 @@
-
+from marshmallow import fields
+from init import db, ma
 
 
 class Service_item(db.Model):
