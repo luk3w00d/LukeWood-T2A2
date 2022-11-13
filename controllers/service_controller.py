@@ -27,19 +27,19 @@ def get_one_service(id):
         return {'error': f'Service not found with id {id}'}, 404
 
 
-# @service_bp.route('/<int:id>/', methods=['DELETE'])
+@service_bp.route('/<int:id>/', methods=['DELETE'])
 # @jwt_required()
-# def delete_one_card(id):
-#     authorize()
+def delete_one_card(id):
+    # authorize()
 
-#     stmt = db.select(Card).filter_by(id=id)
-#     card = db.session.scalar(stmt)
-#     if card:
-#         db.session.delete(card)
-#         db.session.commit()
-#         return {'message': f"Card '{card.title}' deleted successfully"}
-#     else:
-#         return {'error': f'Card not found with id {id}'}, 404
+    stmt = db.select(Service).filter_by(id=id)
+    service = db.session.scalar(stmt)
+    if service:
+        db.session.delete(service)
+        db.session.commit()
+        return {'message': f"Service'{service}' deleted successfully"}
+    else:
+        return {'error': f'Service not found with id {id}'}, 404
 
 
 # @service_bp.route('/<int:id>/', methods=['PUT', 'PATCH'])

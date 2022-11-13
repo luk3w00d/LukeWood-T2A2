@@ -1,4 +1,5 @@
-
+from marshmallow import fields
+from init import db, ma
 
 
 class Vehicle(db.Model):
@@ -15,13 +16,13 @@ class Vehicle(db.Model):
 
     owner_id = db.Column(db.Integer, db.ForeignKey('owner.id'), nullable=False)
 
-    owner = db.relationship('Owner', back_populates='')
-    comments = db.relationship('Comment', back_populates='card', cascade='all, delete')
+    owner = db.relationship('Owner', back_populates='Service')
+    
 
 
-class CardSchema(ma.Schema):
-    user = fields.Nested('UserSchema', only=['name', 'email'])
-    comments = fields.List(fields.Nested('CommentSchema', exclude=['card']))
+class VehicleSchema(ma.Schema):
+    owner = fields.Nested('OwnerSchema', only=['first_name', 'email'])
+    
 
     class Meta:
         fields = ('id', 'vin', 'make', 'model', 'year', 'created_at', 'updated_at', 'deleted')

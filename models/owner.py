@@ -13,11 +13,12 @@ class Owner(db.Model):
     updated_at = db.Column(db.DateTime)
     deleted = db.Column(db.Boolean)
 
-
+    vehicles = db.relationship('Vehicle', back_populates='owner', cascade='all, delete')
 
 class OwnerSchema(ma.Schema):
-    services = fields.List(fields.Nested('ServiceSchema'))
+    
+    vehicles = fields.List(fields.Nested('VehicleSchema'))
 
     class Meta:
         fields = ('id', 'first_name', 'last_name', 'email', 'phone', 'created_at', 'updated_at', 'deleted')
-        ordered = True
+        ordered = True 
